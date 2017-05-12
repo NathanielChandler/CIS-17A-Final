@@ -1,10 +1,19 @@
 #include "Enemy.h"
-
+#include <exception>
 
 //lvl(1-4) dictates movesets, stats, and currency payouts
 //type(0-1) dictates type of currency paid out (0 = AUD, 1 = AMD) and certain stats
 Enemy::Enemy(int lvl, int type)
 {
+	if (type < 0 || type > 1)
+	{
+		throw domain_error("Invalid int Type");
+	}
+	if (lvl <= 0 || lvl > 4)
+	{
+		throw domain_error("Invalid int Lvl");
+	}
+
 	setMaxVit(10 * lvl);
 	setMaxStm(10 * lvl);
 	resetStats();
@@ -12,13 +21,23 @@ Enemy::Enemy(int lvl, int type)
 	setAtk((2 + type) * lvl);
 	setDef((3 - type) * lvl);
 
+	switch (lvl)
+	{
+	case 1:	_name += "Trifling";	break;
+	case 2:	_name += "Mutilated";	break;
+	case 3:	_name += "Ravenous";	break;
+	case 4:	_name += "Colossal";	break;
+	}
+
 	if (type == 0)
 	{
 		setAud(10 * lvl * lvl * lvl * lvl);
+		_name += " Automation";
 	}
 	else
 	{
 		setAmd(10 * lvl * lvl * lvl * lvl);
+		_name += " Animation";
 	}
 
 	//Moveset: a = attack, b = guard, c = evade, d = stance, e = strafe
@@ -35,7 +54,6 @@ Enemy::Enemy(int lvl, int type)
 		_moveset.push_back("eba");
 		_moveset.push_back("bbb");
 		_moveset.push_back("cda");
-	default:;// insert exception thrown
 	}
 }
 
@@ -46,6 +64,10 @@ Enemy::~Enemy()
 
 string Enemy::getMoveset(int selection)
 {
-	if()
-	return _moveset[selection--];
+	if (selection < 0 || selection >= _moveset.size())
+	{
+		throw domain_error("Invalid int selection");
+	}
+		
+	return _moveset[selection];
 }
