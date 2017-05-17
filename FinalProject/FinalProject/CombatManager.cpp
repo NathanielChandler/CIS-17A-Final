@@ -16,39 +16,56 @@ string CombatManager::enemyMoveManager()
 	return string();
 }
 
-string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shared_ptr<Combatant> defender, char lastmove)
+string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shared_ptr<Combatant> defender, char previousmove, char* attackerMod, char* defenderMod)
 {
 	string toReturn;
 	//Moveset: a = attack, b = guard, c = evade, d = stance, e = strafe, f = stanced attack, s = staggered
 	switch (attack)
 	{
 	case 'a':
-		switch (lastmove)
+		if (attacker->getCurrentStm() >= attacker->getAtk())							// checks if there's enough stamina
 		{
-		case 'b':
-		case 'c':
-		case 'd':
-		case 'e':
-		default:
-			break;
+			switch (previousmove)
+			{
+			case 'e':
+			case 'b':
+				defender->setCurrentStm(defender->getCurrentStm() - attacker->getAtk()); //knocks down D's stamina
+				if (defender->getCurrentStm() <= 0)										// check to see if D's stamina is out		
+				{
+					*defenderMod = 's';
+				}
+				if(attacker-> getAtk() > defender-> getDef())							// check for damage
+				{
+					int vitChange = defender->getCurrentVit() - (attacker->getAtk() - defender->getDef()); 
+					defender->setCurrentVit(vitChange);
+				}
+				attacker->setCurrentStm(attacker->getCurrentStm() - attacker->getAtk());  //deducts from A's stamina
+				break;
+			case 'c':
+			case 'd':
+			
+			default:
+				break;
+			}
 		}
+		else 
 		break;
 	case 'b':
-		switch (lastmove)
+		switch (previousmove)
 		{
 		case 'a':
 		default:
 			break;
 		}
 	case 'c':
-	case 'd':
+	//case 'd':
 	case 'e':
 	case 'f':
 	case 's':
 	default:
 		break;
 	}
-
+	//check for damage if last move was 'stance'
 	return toReturn;
 }
 
