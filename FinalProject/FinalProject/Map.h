@@ -13,5 +13,6 @@ class Map
 	
 
 	public:
-		void CreateMap();
+		void InitMap();
+		void SetCellValues(int values[], int attribute);
 };

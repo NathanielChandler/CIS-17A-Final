@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Combatant.cpp" />
     <ClCompile Include="CombatManager.cpp" />
+    <ClCompile Include="DevMain.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
