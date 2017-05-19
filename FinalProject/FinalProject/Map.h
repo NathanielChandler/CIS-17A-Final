@@ -7,9 +7,17 @@
 class Map
 {
 	private:
-		Square _map[100];
+		const int TOTAL = 7;
+		Square* _map[100];
 		std::ifstream cellValues;
-	
+		std::vector<int> levels;
+		std::vector<int> moveNorth;
+		std::vector<int> moveSouth;
+		std::vector<int> moveWest;
+		std::vector<int> moveEast;
+		std::vector<int> altar;
+		std::vector<int> chasm;
+		std::vector<string> lines;
 
 	public:
 		void InitMap();
