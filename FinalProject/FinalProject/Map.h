@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <vector>
 #include <string>
 #include <fstream>
 #include "Square.h"
@@ -7,12 +7,11 @@
 class Map
 {
 	private:
-		std::map<std::string, Square> map;
 		Square _map[100];
 		std::ifstream cellValues;
 	
 
 	public:
 		void InitMap();
-		void SetCellValues(int values[], int attribute);
+		std::vector<int> Map::ConfigValues(std::string s);
 };

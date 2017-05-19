@@ -1,66 +1,49 @@
 #include "Map.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cstring>
 using namespace std;
 
 void Map::InitMap()
 {
-	string value;
-	/* These arrays hold the index of cells that have a specific attribute. */
-	int enemyCount[100];
-	//int level[];
-	//int moveNorth[];
-	//int moveSouth[];
-
+	/*In the text doc, line 1 = level data
+	  line 2 = move north data, etc.*/
+	vector<int> levels;
+	vector<int> moveNorth;
+	vector<int> moveSouth;
+	vector<int> moveWest;
+	vector<int> moveEast;
+	vector<int> altar;
+	vector<int> chasm;
+	vector<string> lines;
 
 	cellValues.open("CellData.txt");
-
-
-	if (!cellValues.eof())
-	{
-		if (!getline(cellValues, value,':'))
-		{
-			//error
-		}
-		else
-		{
-			if (value == "ENEMYCOUNT")
-			{
-				SetCellValues(enemyCount, 1);
-			}
-		}
-	}
 	while (!cellValues.eof())
 	{
-		getline(cellValues, value);
-		int num = atoi(value.c_str());
-
-		cout << num;
+		string l;
+		for (int i = 0; i < 7; i++)
+		{
+			getline(cellValues, l, '\n');
+			lines.push_back(l);
+		}
 	}
-	cellValues.close();
-	system("pause");
 
+	cellValues.close();
 
 }
 
-void Map::SetCellValues(int values[], int attribute)
+vector<int> Map::ConfigValues(std::string s)
 {
-	switch (attribute)
-	{
-		case 1: //Enemy Count
-			break;
-		case "LEVEL":
-			break;
-		case "MOVENORTH":
-			break;
-		case "MOVESOUTH":
-			break;
-		case "MOVEWEST":
-			break;
-		case "MOVEEAST":
-			break;
+	vector<int> temp;
+	stringstream strStream(s);
+	string token;
 
+	while (getline(strStream, token, ','))
+	{
+		int num = atoi(token.c_str());
+		temp.push_back(num);
 	}
-	
+
+	return temp;
 }
