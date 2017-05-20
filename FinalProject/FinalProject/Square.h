@@ -10,7 +10,9 @@ class Square
 		bool canMoveEast = false;
 		bool canMoveSouth = false;
 		bool canMoveWest = false;
-
+		bool isAltar = false;
+		bool isChasm = false;
+		std::string GenerateDescription();
 	
 
 
