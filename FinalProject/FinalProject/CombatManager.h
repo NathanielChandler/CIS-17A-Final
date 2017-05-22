@@ -5,13 +5,15 @@
 class CombatManager
 {
 private:
-	char playerMod;
-	char enemyMod;
+	char _playerMod;
+	char _enemyMod;
+	char _playerMove;
+	char _enemyMove;
 	shared_ptr<Player> _player;
 	shared_ptr<Enemy> _enemy;
 	string _enemyMoveset;
 	void getEnemyMoveset();
-	string enemyMoveManager();
+	char enemyMoveManager();
 	string ruleBook(shared_ptr<Combatant> attacker, char attack, shared_ptr<Combatant> defender,
 		char lastmove, char* attackerMod, char* defenderMod);
 public:
