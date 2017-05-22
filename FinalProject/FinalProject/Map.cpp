@@ -32,25 +32,35 @@ void Map::InitMap()
 	/*Creating the rooms and setting their variables based off of the arrays.*/
 	for (int i = 0; i < 100; i++)
 	{
-		for (int j = 0; j < moveNorth.size(); i++)
+		for (int j = 0; j < moveNorth.size(); j++)
 		{
 			if (i == moveNorth[j])
-				_map[i]->canMoveNorth = true;
+				_map[i]->setNorth();
 		}
-		for (int j = 0; j < moveSouth.size(); i++)
+		for (int j = 0; j < moveSouth.size(); j++)
 		{
 			if (i == moveSouth[j])
-				_map[i]->canMoveSouth = true;
+				_map[i]->setSouth();
 		}
-		for (int j = 0; j < moveWest.size(); i++)
+		for (int j = 0; j < moveWest.size(); j++)
 		{
 			if (i == moveWest[j])
-				_map[i]->canMoveWest = true;
+				_map[i]->setWest();
 		}
-		for (int j = 0; j < moveEast.size(); i++)
+		for (int j = 0; j < moveEast.size(); j++)
 		{
 			if (i == moveEast[j])
-				_map[i]->canMoveEast = true;
+				_map[i]->setEast();
+		}
+		for (int j = 0; j < altar.size(); j++)
+		{
+			if (i == altar[j])
+				_map[i]->setAltar();
+		}
+		for (int j = 0; j < chasm.size(); j++)
+		{
+			if (i == chasm[j])
+				_map[i]->setChasm();
 		}
 	}
 }
@@ -68,4 +78,9 @@ vector<int> Map::ConfigValues(std::string s)
 	}
 
 	return temp;
+}
+
+void Map::move(string dir)
+{
+	
 }

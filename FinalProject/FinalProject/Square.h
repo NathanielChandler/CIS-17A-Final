@@ -3,7 +3,7 @@
 
 class Square
 {
-	public:
+	private:
 		std::string information = "";
 		int level = 0;
 		bool canMoveNorth = false;
@@ -12,7 +12,14 @@ class Square
 		bool canMoveWest = false;
 		bool isAltar = false;
 		bool isChasm = false;
+	public:
 		std::string GenerateDescription();
+		void setNorth() { canMoveNorth = true; }
+		void setSouth() { canMoveSouth = true; }
+		void setWest() { canMoveWest = true; }
+		void setEast() { canMoveEast = true; }
+		void setAltar() { isAltar = true; }
+		void setChasm() { isChasm = true; }
 	
 
 

@@ -3,14 +3,14 @@ using namespace std;
 
 string Square::GenerateDescription()
 {
-	string output = "This room has a";
+	string output = "This room has ";
 	if (isChasm)
 	{
-		output += "n endless chasm.";
+		output += "an endless chasm.";
 	}
 	else if (isAltar)
 	{
-		output += " beautiful  altar with " + '\n';
+		output += "a beautiful altar with " + '\n';
 	}
 	else
 	{
@@ -23,4 +23,6 @@ string Square::GenerateDescription()
 		if (canMoveEast)
 			output += "a path to the east" + '\n';
 	}
+
+	return output;
 }

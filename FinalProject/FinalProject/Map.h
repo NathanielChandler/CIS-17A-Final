@@ -9,6 +9,7 @@ class Map
 	private:
 		const int TOTAL = 7;
 		Square* _map[100];
+		Square currentLocation;
 		std::ifstream cellValues;
 		std::vector<int> levels;
 		std::vector<int> moveNorth;
@@ -22,4 +23,5 @@ class Map
 	public:
 		void InitMap();
 		std::vector<int> Map::ConfigValues(std::string s);
+		void move();
 };
