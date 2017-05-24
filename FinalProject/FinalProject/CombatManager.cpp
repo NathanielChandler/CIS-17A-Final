@@ -30,11 +30,16 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 	//Moveset: a = attack, b = guard, c = evade, d = stance, e = strafe, f = stanced attack, s = staggered
 	switch (attack)
 	{
+	case 's':
+		toReturn += " was staggered!\n";
+		break;
 	case 'f':
 		damageMod++;
+		*attackerMod = 'z';
 	case 'a':
 		if (attacker->getCurrentStm() >= attacker->getAtk())							// checks if there's enough stamina
 		{
+			toReturn += " attacked\n\t";
 			switch (previousmove)
 			{
 			case 'b':
@@ -45,22 +50,33 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 				}
 				if(attacker-> getAtk() * damageMod > defender-> getDef())							// check for damage
 				{
-					int vitChange = defender->getCurrentVit() -((attacker->getAtk() * damageMod) - defender->getDef()); 
-					defender->setCurrentVit(vitChange);
+					int vitChange = (attacker->getAtk() * damageMod) - defender->getDef(); 
+					defender->setCurrentVit(defender->getCurrentVit() - vitChange);
+					toReturn += "and hit for " + to_string(vitChange) + " damage!\n";
+				}
+				else
+				{
+					toReturn += "and the hit was absorbed!\n";
 				}
 				attacker->setCurrentStm(attacker->getCurrentStm() - attacker->getAtk());  //deducts from A's stamina
 				break;
 			case 'c': // successful evade, enemy doesn't take damage
+				toReturn += "and missed!\n";
 				break;
 			case 'e': // 25% chance to dodge attack when strafeing
-				if (hit > 2) break; //carries on down  past d to register hit
+				if (hit > 2)
+				{
+					toReturn += "and missed!\n";
+					break;
+				}//carries on down  past d to register hit
 			case 'd':// def mod = z, cancels stanced attack
 				*defenderMod = 'z';
 			case 's':
-				damageMod++;
+				if(previousmove == 's') damageMod++;
 			default: // hits for damage
 				defender->setCurrentVit(defender->getCurrentVit() - (attacker->getAtk() * damageMod));
 				attacker->setCurrentStm(attacker->getCurrentStm() - attacker->getAtk());  //deducts from A's stamina
+				toReturn += "and hit for " + to_string((attacker->getAtk() * damageMod)) + " damage!\n";
 				break;
 			}
 		}
@@ -71,21 +87,37 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 			attacker->setCurrentStm(attacker->getCurrentStm() + change);
 		else
 			attacker->setCurrentStm(attacker->getMaxStm());
+		toReturn += " put up their guard\n";
 		break;
 	case 'c':  // if enough stamina, dodge, else mod into 'e'
 		change = attacker->getMaxStm() / 5;
 		if (attacker->getCurrentStm() >= change)
+		{
 			attacker->setCurrentStm(attacker->getCurrentStm() - change);
-		else *attackerMod = 'e';
+			toReturn += " evaded\n";
+		}
+		else
+		{
+			*attackerMod = 'e';
+			toReturn += " tried to evade, but failed\n";
+		}
 		break;
 	case 'd':  // restore stamia, mod f
 		*attackerMod = 'f';
+		toReturn += " raised their weapon\n\t";
 	case 'e':	
+		toReturn += " restored ";
 		change = attacker->getMaxStm() / 5;
 		if (attacker->getMaxStm() >= attacker->getCurrentStm() + change)
+		{
 			attacker->setCurrentStm(attacker->getCurrentStm() + change);
+			toReturn += to_string(change) + " stamina\n";
+		}
 		else
+		{
 			attacker->setCurrentStm(attacker->getMaxStm());
+			toReturn += "all stamina\n";
+		}
 		break;
 	default:
 		break;
@@ -95,6 +127,10 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 
 CombatManager::CombatManager(shared_ptr<Player> player, shared_ptr<Enemy> enemy) : _player(player) , _enemy(enemy)
 {
+	_playerMod = 'z';
+	_enemyMod = 'z';
+	_playerMove = 'z';
+	_enemyMove = 'z';
 }
 
 CombatManager::~CombatManager()
@@ -104,21 +140,29 @@ CombatManager::~CombatManager()
 string CombatManager::turn(char c)
 {
 	string toReturn;
+	
 	if (_playerMod == 'f' && c == 'a') _playerMove = 'f';
+	else if (_playerMod != 'z')
+	{
+		_playerMove = _playerMod;
+		_playerMod = 'z';
+	}
 	else _playerMove = c;
-
-	toReturn += ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
+	toReturn += _player->getName() + ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
 
 	_enemyMove = enemyMoveManager();
-	if (_enemyMod == 's') _enemyMove = 's';
-	else if (_enemyMod == 'f' && _enemyMove == 'a') _enemyMove = 'f';
-
-	toReturn += ruleBook( _enemy, _enemyMove, _player, _playerMove,&_enemyMod ,&_playerMod);
+	if (_enemyMod == 'f' && _enemyMove == 'a') _enemyMove = 'f';
+	else if (_enemyMod != 'z')
+	{
+		_enemyMove = _enemyMod;
+		_enemyMod = 'z';
+	}
+	toReturn += _enemy->getName() + ruleBook( _enemy, _enemyMove, _player, _playerMove,&_enemyMod ,&_playerMod);
 
 	if (_playerMod == 's') _playerMove = 's';
 	if (_playerMove == 's')
 	{
-		toReturn += "You were staggered!\n";
+		toReturn += _player->getName() + " was staggered!\n";
 		toReturn += ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
 	}
 	

@@ -5,7 +5,8 @@ class Player : public Combatant
 private:
 	 //Square currentLocation;
 public:
-	Player();
+	Player(string name) { _name = name; };
 	~Player();
+	string getName() { return _name; };
 };
 
