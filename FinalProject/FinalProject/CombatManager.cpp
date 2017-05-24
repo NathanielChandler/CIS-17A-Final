@@ -80,6 +80,10 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 				break;
 			}
 		}
+		else
+		{
+			toReturn +=" tried to attack, but failed!\n";
+		}
 		break;
 	case 'b':// restores stamina
 		change = attacker->getMaxStm() / 10;
@@ -140,9 +144,10 @@ CombatManager::~CombatManager()
 string CombatManager::turn(char c)
 {
 	string toReturn;
-	
-	if (_playerMod == 'f' && c == 'a') _playerMove = 'f';
-	else if (_playerMod != 'z')
+
+	if (c != 'a' || c != 'b' || c != 'c' || c != 'd' || c != 'e') _playerMove = 'e';
+	else if (_playerMod == 'f' && c == 'a') _playerMove = 'f';
+	else if (_playerMod != 'z' &&_playerMod != 'f')
 	{
 		_playerMove = _playerMod;
 		_playerMod = 'z';
@@ -152,16 +157,17 @@ string CombatManager::turn(char c)
 
 	_enemyMove = enemyMoveManager();
 	if (_enemyMod == 'f' && _enemyMove == 'a') _enemyMove = 'f';
-	else if (_enemyMod != 'z')
+	else if (_enemyMod != 'z' &&_enemyMod != 'f')
 	{
 		_enemyMove = _enemyMod;
 		_enemyMod = 'z';
 	}
 	toReturn += _enemy->getName() + ruleBook( _enemy, _enemyMove, _player, _playerMove,&_enemyMod ,&_playerMod);
 
-	if (_playerMod == 's') _playerMove = 's';
-	if (_playerMove == 's')
+	if (_playerMod == 's') 
 	{
+		_playerMove = 's';
+		_playerMod = 'z';
 		toReturn += _player->getName() + " was staggered!\n";
 		toReturn += ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
 	}
