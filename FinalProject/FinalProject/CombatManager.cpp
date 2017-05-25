@@ -145,14 +145,14 @@ string CombatManager::turn(char c)
 {
 	string toReturn;
 
-	if (c != 'a' || c != 'b' || c != 'c' || c != 'd' || c != 'e') _playerMove = 'e';
+	_playerMove = c;
+	if (c != 'a' && c != 'b' && c != 'c' && c != 'd' && c != 'e') _playerMove = 'e';
 	else if (_playerMod == 'f' && c == 'a') _playerMove = 'f';
 	else if (_playerMod != 'z' &&_playerMod != 'f')
 	{
 		_playerMove = _playerMod;
 		_playerMod = 'z';
 	}
-	else _playerMove = c;
 	toReturn += _player->getName() + ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
 
 	_enemyMove = enemyMoveManager();
