@@ -20,9 +20,10 @@ class Square
 		void setEast() { canMoveEast = true; }
 		void setAltar() { isAltar = true; }
 		void setChasm() { isChasm = true; }
-	
-
-
-
-
+		bool getNorth() { return canMoveNorth; }
+		bool getSouth() { return canMoveSouth; }
+		bool getWest() { return canMoveWest;}
+		bool getEast() { return canMoveEast; }
+		bool getAltar() { return isAltar; }
+		bool getChasm() { return isChasm; }
 };

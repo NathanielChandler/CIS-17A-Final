@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <algorithm>
+#include <iterator>
 using namespace std;
 
 void Map::InitMap()
@@ -80,7 +82,37 @@ vector<int> Map::ConfigValues(std::string s)
 	return temp;
 }
 
-void Map::move(string dir)
+void Map::move(Directions dir)
 {
-	
+	switch (dir)
+	{
+		case NORTH:
+			index -= 10;
+			if (_map[index] != nullptr && currentLocation->getNorth() == true && index >= 0)
+			{
+				currentLocation = _map[index];
+			}
+			break;
+		case SOUTH:
+			index += 10;
+			if (_map[index] != nullptr && currentLocation->getSouth() == true && index <= 99)
+			{
+				currentLocation = _map[index];
+			}
+			break;
+		case WEST:
+			index -= 1;
+			if (_map[index] != nullptr && currentLocation->getWest() == true && index >= 0)
+			{
+				currentLocation = _map[index];
+			}
+			break;
+		case EAST:
+			index -= 1;
+			if (_map[index] != nullptr && currentLocation->getEast() == true && index <= 99)
+			{
+				currentLocation = _map[index];
+			}
+			break;
+	}
 }
