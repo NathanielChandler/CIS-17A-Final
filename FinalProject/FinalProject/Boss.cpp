@@ -23,24 +23,28 @@ Boss::Boss(int selection)
 		intro = "gaeeg";
 		verse = "ageeg";
 		chorus = "agaga";
+		break;
 	case 2:
 		_name = "Sentinal Viaduct";
 		mod = 10;
 		intro = "eebha";
 		verse = "behas";
 		chorus = "baaas";
+		break;
 	case 3:
 		_name = "Great Belfry Daemon";
 		mod = 15;
 		intro = "iaekl";
 		verse = "eiaei";
 		chorus = "eklkl";
+		break;
 	case 4:
 		_name = "Mog";
 		mod = 20;
 		intro = "ejkla";
 		verse = "ebeja";
 		chorus = "ebjkla";
+		break;
 	}
 	_moveset = intro + verse + chorus + verse + chorus + intro + chorus;
 

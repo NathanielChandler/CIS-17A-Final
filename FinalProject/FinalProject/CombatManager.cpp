@@ -5,10 +5,14 @@
 
 void CombatManager::getEnemyMoveset()
 {
-	int size = _enemy->getMovesetSize();
-	srand(time(NULL));
-	int selection = rand() % size;
-	_enemyMoveset = _enemy->getMoveset(selection);
+	if (isBossFight) _enemyMoveset = _boss->getMoveset();
+	else
+	{
+		int size = _enemy->getMovesetSize();
+		srand(time(NULL));
+		int selection = rand() % size;
+		_enemyMoveset = _enemy->getMoveset(selection);
+	}
 }
 
 char CombatManager::enemyMoveManager()
@@ -28,18 +32,40 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 	int damageMod = 1;
 	string toReturn;
 	//Moveset: a = attack, b = guard, c = evade, d = stance, e = strafe, f = stanced attack, s = staggered
+	//boss list: 1 - Pontiff Void, 2 - Sentinal Viaduct, 3 - Great Belfry Daemon, 4 - Mog
+	/*unique moves:			g, h, i, j - Windups
+							k - Rise into air
+							l - Slams into the earth
+	*/
 	switch (attack)
 	{
+	case 'g': 
+		toReturn += " murmurs null chantings\n";
+		break;
+	case 'h':
+		toReturn += " takes an arched stance\n";
+		break;
+	case 'i':
+		toReturn += " rings out a shriek\n";
+		break;
+	case 'j':
+		toReturn += " draws upon the ether of its forefathers";
+		break;
+	case 'k':
+		toReturn += " rose into the air\n";
+		break;
 	case 's':
 		toReturn += " was staggered!\n";
 		break;
 	case 'f':
 		damageMod++;
 		*attackerMod = 'z';
+	case 'l':
 	case 'a':
 		if (attacker->getCurrentStm() >= attacker->getAtk())							// checks if there's enough stamina
 		{
-			toReturn += " attacked\n\t";
+			if(attack == 'l') toReturn += " slammed into the ground\n\t";
+			else toReturn += " attacked\n\t";
 			switch (previousmove)
 			{
 			case 'b':
@@ -60,6 +86,7 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 				}
 				attacker->setCurrentStm(attacker->getCurrentStm() - attacker->getAtk());  //deducts from A's stamina
 				break;
+			case 'k':
 			case 'c': // successful evade, enemy doesn't take damage
 				toReturn += "and missed!\n";
 				break;
@@ -131,6 +158,16 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 
 CombatManager::CombatManager(shared_ptr<Player> player, shared_ptr<Enemy> enemy) : _player(player) , _enemy(enemy)
 {
+	isBossFight = false;
+	_playerMod = 'z';
+	_enemyMod = 'z';
+	_playerMove = 'z';
+	_enemyMove = 'z';
+}
+
+CombatManager::CombatManager(shared_ptr<Player> player, shared_ptr<Boss> boss) : _player(player), _boss(boss)
+{
+	isBossFight = true;
 	_playerMod = 'z';
 	_enemyMod = 'z';
 	_playerMove = 'z';
@@ -153,7 +190,8 @@ string CombatManager::turn(char c)
 		_playerMove = _playerMod;
 		_playerMod = 'z';
 	}
-	toReturn += _player->getName() + ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
+	if(isBossFight) toReturn += _player->getName() + ruleBook(_player, _playerMove, _boss, _enemyMove, &_playerMod, &_enemyMod);
+	else toReturn += _player->getName() + ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
 
 	_enemyMove = enemyMoveManager();
 	if (_enemyMod == 'f' && _enemyMove == 'a') _enemyMove = 'f';
@@ -162,14 +200,19 @@ string CombatManager::turn(char c)
 		_enemyMove = _enemyMod;
 		_enemyMod = 'z';
 	}
-	toReturn += _enemy->getName() + ruleBook( _enemy, _enemyMove, _player, _playerMove,&_enemyMod ,&_playerMod);
 
-	if (_playerMod == 's') 
+	if(isBossFight) toReturn += _boss->getName() + ruleBook(_boss, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
+	else toReturn += _enemy->getName() + ruleBook( _enemy, _enemyMove, _player, _playerMove,&_enemyMod ,&_playerMod);
+
+	if (_playerMod == 's' && _player->isDead() == false) 
 	{
 		_playerMove = 's';
 		_playerMod = 'z';
 		toReturn += _player->getName() + " was staggered!\n";
-		toReturn += ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
+		_enemyMove = enemyMoveManager();
+		if (isBossFight) toReturn += _boss->getName() + ruleBook(_boss, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
+		else toReturn += _enemy->getName() + ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
+
 	}
 	
 	return toReturn;
