@@ -5,7 +5,10 @@ class Player : public Combatant
 private:
 	 //Square currentLocation;
 public:
-	Player();
+	std::string getName() { return _name; };
+
+
+	Player(std::string name) { _name = name; };
 	~Player();
 };
 

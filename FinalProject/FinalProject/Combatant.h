@@ -41,6 +41,7 @@ public:
 	int getDef() { return _def; };
 	int getAmd() { return _amd; };
 	int getAud() { return _aud; };
+	
 
 	bool isDead();
 };
