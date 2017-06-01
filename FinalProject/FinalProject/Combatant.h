@@ -26,8 +26,8 @@ public:
 
 	void setCurrentVit(int vit) { _currentVit = vit; };
 	void setMaxVit(int vit) { _maxVit = vit; };
-	void setCurrentStm(int stm) { _currentVit = stm; };
-	void setMaxStm(int stm) { _maxVit = stm; };
+	void setCurrentStm(int stm) { _currentStm = stm; };
+	void setMaxStm(int stm) { _maxStm = stm; };
 	void setAtk(int atk) { _atk = atk; };
 	void setDef(int def) { _def = def; };
 	void setAmd(int amd) { _amd = amd; };
