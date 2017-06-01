@@ -206,13 +206,7 @@ string CombatManager::turn(char c)
 
 	if (_playerMod == 's' && _player->isDead() == false) 
 	{
-		_playerMove = 's';
-		_playerMod = 'z';
-		toReturn += _player->getName() + " was staggered!\n";
-		_enemyMove = enemyMoveManager();
-		if (isBossFight) toReturn += _boss->getName() + ruleBook(_boss, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
-		else toReturn += _enemy->getName() + ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
-
+		turn('e');
 	}
 	
 	return toReturn;
