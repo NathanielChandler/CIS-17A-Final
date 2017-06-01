@@ -27,7 +27,7 @@ class Map
 	public:
 		Map();
 		~Map();
-		Square* getCurrentLocation() { return currentLocation; }
+		Square getCurrentLocation() { return currentLocation; }
 		void InitMap();
 		std::vector<int> Map::ConfigValues(std::string s);
 		void move(Directions dir);

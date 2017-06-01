@@ -15,7 +15,9 @@ class Square
 	public:
 		Square() {};
 		~Square() {};
-		std::string GenerateDescription();
+		void GenerateDescription();
+		std::string getInfo();
+		void setLevel(int _level) { level = _level; }
 		void setNorth() { canMoveNorth = true; }
 		void setSouth() { canMoveSouth = true; }
 		void setWest() { canMoveWest = true; }

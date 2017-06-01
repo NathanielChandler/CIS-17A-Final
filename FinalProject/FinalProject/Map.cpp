@@ -33,38 +33,41 @@ void Map::InitMap()
 	altar = ConfigValues(lines[5]);
 	chasm = ConfigValues(lines[6]);
 
-	/*Creating the rooms and setting their variables based off of the arrays.*/
+	/*Filling the array with rooms.*/
+	Square temp;
 	for (int i = 0; i < 100; i++)
 	{
-		for (int j = 0; j < moveNorth.size(); j++)
+		_map[i] = temp;
+	}
+
+	/*Setting room variables based off of the arrays.*/
+	for (int i = 0; i < 100; i++)
+	{
+		/*Setting the level.*/
+		_map[i].setLevel(levels[i]);
+		if (moveNorth[i] == 1)
 		{
-			if (i == moveNorth[j])
-				_map[i].setNorth();
+			_map[i].setNorth();
 		}
-		for (int j = 0; j < moveSouth.size(); j++)
+		if (moveSouth[i] == 1)
 		{
-			if (i == moveSouth[j])
-				_map[i].setSouth();
+			_map[i].setSouth();
 		}
-		for (int j = 0; j < moveWest.size(); j++)
+		if (moveWest[i] == 1)
 		{
-			if (i == moveWest[j])
-				_map[i].setWest();
+			_map[i].setWest();
 		}
-		for (int j = 0; j < moveEast.size(); j++)
+		if (moveEast[i] == 1)
 		{
-			if (i == moveEast[j])
-				_map[i].setEast();
+			_map[i].setEast();
 		}
-		for (int j = 0; j < altar.size(); j++)
+		if (altar[i] == 1)
 		{
-			if (i == altar[j])
-				_map[i].setAltar();
+			_map[i].setAltar();
 		}
-		for (int j = 0; j < chasm.size(); j++)
+		if (chasm[i] == 1)
 		{
-			if (i == chasm[j])
-				_map[i].setChasm();
+			_map[i].setChasm();
 		}
 	}
 }
@@ -90,28 +93,28 @@ void Map::move(Directions dir)
 	{
 		case NORTH:
 			index -= 10;
-			if (_map[index] != NULL && currentLocation.getNorth() == true && index >= 0)
+			if (currentLocation.getNorth() == true && index >= 0)
 			{
 				currentLocation = _map[index];
 			}
 			break;
 		case SOUTH:
 			index += 10;
-			if (_map[index] != nullptr && currentLocation.getSouth() == true && index <= 99)
+			if (currentLocation.getSouth() == true && index <= 99)
 			{
 				currentLocation = _map[index];
 			}
 			break;
 		case WEST:
 			index -= 1;
-			if (_map[index] != nullptr && currentLocation.getWest() == true && index >= 0)
+			if (currentLocation.getWest() == true && index >= 0)
 			{
 				currentLocation = _map[index];
 			}
 			break;
 		case EAST:
 			index -= 1;
-			if (_map[index] != nullptr && currentLocation->getEast() == true && index <= 99)
+			if (currentLocation.getEast() == true && index <= 99)
 			{
 				currentLocation = _map[index];
 			}
