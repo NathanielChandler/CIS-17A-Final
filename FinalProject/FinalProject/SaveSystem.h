@@ -14,7 +14,7 @@ public:
 
 	std::ifstream saveFiles;
 	Player retrieveSaveData(Player name);
-	std::vector<std::string> getfilenames; //to retrieve save file vector 
+	std::vector<std::string> getfilenames(std::vector<std::string> fileName); //to retrieve save file vector 
 
 	void addNewSaveFile(Combatant x, std::string filename, std::vector<std::string>);
 	SaveSystem();

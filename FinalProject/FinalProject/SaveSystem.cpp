@@ -5,40 +5,36 @@
 #include <string>
 #include <fstream>
 
-
-
-
-
 Player SaveSystem::retrieveSaveData(Player name)
 {
 	
 	std::string filename = name.getName();
 	filename += ".txt";
 
-	std::ifstream saveFiles(filename);
+	std::ifstream saveFiles;
 	saveFiles.open(filename);
 	std::vector<string> lines;
 
-	while (!saveFiles.eof())
+	std::string l;
+	while(!saveFiles.eof())
 	{
-	
-		string l;
 		for (int i = 0; i < 7; i++)
 		{
+			std::getline(saveFiles, l);
 			lines.push_back(l);
-		}
-		
 
+		}
 	}
+	
+
+
 	std::vector<int> data;
 
 	for (int i = 1; i < 7; i++)
 	{
-
 		data.push_back(std::stoi(lines[i]));
-		
-
 	}
+
 	saveFiles.close();
 
 	/*Parsing the lines and storing them into their respective vectors.*/
@@ -50,7 +46,14 @@ Player SaveSystem::retrieveSaveData(Player name)
 	name.setAud(data[5]);
 	name.resetStats();
 
+	
+
 	return name;
+}
+
+std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileName)
+{
+	return fileName;
 }
 
 void SaveSystem::addNewSaveFile(Combatant name, std::string filename, std::vector<std::string> files)
