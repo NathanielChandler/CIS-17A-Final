@@ -7,6 +7,8 @@
 #include <iterator>
 using namespace std;
 
+Map::Map() {}
+Map::~Map() {}
 void Map::InitMap()
 {
 	/*Reading in the lines and storing them into an vectors.*/
@@ -37,32 +39,32 @@ void Map::InitMap()
 		for (int j = 0; j < moveNorth.size(); j++)
 		{
 			if (i == moveNorth[j])
-				_map[i]->setNorth();
+				_map[i].setNorth();
 		}
 		for (int j = 0; j < moveSouth.size(); j++)
 		{
 			if (i == moveSouth[j])
-				_map[i]->setSouth();
+				_map[i].setSouth();
 		}
 		for (int j = 0; j < moveWest.size(); j++)
 		{
 			if (i == moveWest[j])
-				_map[i]->setWest();
+				_map[i].setWest();
 		}
 		for (int j = 0; j < moveEast.size(); j++)
 		{
 			if (i == moveEast[j])
-				_map[i]->setEast();
+				_map[i].setEast();
 		}
 		for (int j = 0; j < altar.size(); j++)
 		{
 			if (i == altar[j])
-				_map[i]->setAltar();
+				_map[i].setAltar();
 		}
 		for (int j = 0; j < chasm.size(); j++)
 		{
 			if (i == chasm[j])
-				_map[i]->setChasm();
+				_map[i].setChasm();
 		}
 	}
 }
@@ -88,21 +90,21 @@ void Map::move(Directions dir)
 	{
 		case NORTH:
 			index -= 10;
-			if (_map[index] != nullptr && currentLocation->getNorth() == true && index >= 0)
+			if (_map[index] != NULL && currentLocation.getNorth() == true && index >= 0)
 			{
 				currentLocation = _map[index];
 			}
 			break;
 		case SOUTH:
 			index += 10;
-			if (_map[index] != nullptr && currentLocation->getSouth() == true && index <= 99)
+			if (_map[index] != nullptr && currentLocation.getSouth() == true && index <= 99)
 			{
 				currentLocation = _map[index];
 			}
 			break;
 		case WEST:
 			index -= 1;
-			if (_map[index] != nullptr && currentLocation->getWest() == true && index >= 0)
+			if (_map[index] != nullptr && currentLocation.getWest() == true && index >= 0)
 			{
 				currentLocation = _map[index];
 			}

@@ -13,6 +13,8 @@ class Square
 		bool isAltar = false;
 		bool isChasm = false;
 	public:
+		Square() {};
+		~Square() {};
 		std::string GenerateDescription();
 		void setNorth() { canMoveNorth = true; }
 		void setSouth() { canMoveSouth = true; }
