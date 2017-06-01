@@ -93,30 +93,30 @@ void Map::move(Directions dir)
 	{
 		case NORTH:
 			index -= 10;
-			if (currentLocation.getNorth() == true && index >= 0)
+			if (currentLocation->getNorth() == true && index >= 0)
 			{
-				currentLocation = _map[index];
+				currentLocation = &_map[index];
 			}
 			break;
 		case SOUTH:
 			index += 10;
-			if (currentLocation.getSouth() == true && index <= 99)
+			if (currentLocation->getSouth() == true && index <= 99)
 			{
-				currentLocation = _map[index];
+				currentLocation = &_map[index];
 			}
 			break;
 		case WEST:
 			index -= 1;
-			if (currentLocation.getWest() == true && index >= 0)
+			if (currentLocation->getWest() == true && index >= 0)
 			{
-				currentLocation = _map[index];
+				currentLocation = &_map[index];
 			}
 			break;
 		case EAST:
 			index -= 1;
-			if (currentLocation.getEast() == true && index <= 99)
+			if (currentLocation->getEast() == true && index <= 99)
 			{
-				currentLocation = _map[index];
+				currentLocation = &_map[index];
 			}
 			break;
 	}

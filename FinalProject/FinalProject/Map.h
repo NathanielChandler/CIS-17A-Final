@@ -12,7 +12,7 @@ class Map
 	private:
 		const int TOTAL = 7;
 		Square _map[100];
-		Square currentLocation = _map[0];
+		Square* currentLocation = &_map[0];
 		int index = 0;
 		std::ifstream cellValues;
 		std::vector<int> levels;
@@ -27,7 +27,7 @@ class Map
 	public:
 		Map();
 		~Map();
-		Square getCurrentLocation() { return currentLocation; }
+		Square* getCurrentLocation() { return currentLocation; }
 		void InitMap();
 		std::vector<int> Map::ConfigValues(std::string s);
 		void move(Directions dir);

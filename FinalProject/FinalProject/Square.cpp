@@ -1,30 +1,30 @@
 #include"Square.h"
+/*This is also bad buuuuut...  ¯\_(*v*)_/¯ */
+#include <iostream>
 using namespace std;
 
 void Square::GenerateDescription()
 {
-	string output = "This room has ";
-	if (isChasm)
+	cout << endl << "This room has... " << endl;
+	if (isChasm == true)
 	{
-		output += "an endless chasm.";
+		cout << "     - an endless chasm" << endl;
 	}
 	if (isAltar)
 	{
-		output += "a beautiful altar with " + '\n';
+		cout << "     - a beautiful altar" << endl;
 	}
 	if (canMoveNorth)
-		output += "a path to the north" + '\n';
+		cout << "     - a path to the north" << endl;
+
 	if (canMoveSouth)
-		output += "a path to the south" + '\n';
+		cout << "     - a path to the south" << endl;
+
 	if (canMoveWest)
-		output += "a path to the west" + '\n';
+		cout << "     - a path to the west" << endl;;
+
 	if (canMoveEast)
-		output += "a path to the east" + '\n';
+		cout << "     - a path to the east" << endl;
 
-	information = output;
-}
-
-string Square::getInfo()
-{
-	return information;
+	cout << endl;
 }
