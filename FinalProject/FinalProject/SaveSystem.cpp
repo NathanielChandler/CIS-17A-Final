@@ -1,13 +1,13 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 #include "SaveSystem.h" 
 #include "Combatant.h"
-#include <vector>
-#include <iostream>	
-#include <string>
-#include <fstream>
 
 Player SaveSystem::retrieveSaveData(std::string name)
 {
-	Player _player();
+	Player _player(name);
 	std::string filename = name + ".txt";
 
 	std::ifstream saveFiles;
@@ -32,6 +32,7 @@ Player SaveSystem::retrieveSaveData(std::string name)
 
 	saveFiles.close();
 
+	_player.isDead() = false;
 	_player.setMaxVit(data[0]);
 	_player.setMaxStm(data[1]);
 	_player.setAtk(data[2]);
@@ -40,7 +41,7 @@ Player SaveSystem::retrieveSaveData(std::string name)
 	_player.setAud(data[5]);
 	_player.resetStats();
 
-	return name;
+	return _player;
 }
 
 std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileName)
