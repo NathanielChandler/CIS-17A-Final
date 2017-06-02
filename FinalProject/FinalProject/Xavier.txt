@@ -1,0 +1,5 @@
+Name: Xavier.txt
+Vitality: 20/500
+Stamina: -858993460/-858993460
+Attack: 150
+Defense: 50
