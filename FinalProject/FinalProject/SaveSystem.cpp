@@ -5,7 +5,7 @@
 #include "SaveSystem.h" 
 #include "Combatant.h"
 
-Player SaveSystem::retrieveSaveData(std::string name)
+Player SaveSystem::retrieveSaveData(std::string name, Map dungeon)
 {
 	Player _player(name);
 	std::string filename = name + ".txt";
@@ -17,7 +17,7 @@ Player SaveSystem::retrieveSaveData(std::string name)
 	std::string l;
 	while(!saveFiles.eof())
 	{
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			std::getline(saveFiles, l);
 			lines.push_back(l);
@@ -25,14 +25,14 @@ Player SaveSystem::retrieveSaveData(std::string name)
 	}
 
 	std::vector<int> data;
-	for (int i = 1; i < 7; i++)
+	for (int i = 1; i < 8; i++)
 	{
 		data.push_back(std::stoi(lines[i]));
 	}
 
 	saveFiles.close();
 
-	_player.isDead() = false;
+	_player.isDead = false;
 	_player.setMaxVit(data[0]);
 	_player.setMaxStm(data[1]);
 	_player.setAtk(data[2]);
@@ -40,6 +40,7 @@ Player SaveSystem::retrieveSaveData(std::string name)
 	_player.setAmd(data[4]);
 	_player.setAud(data[5]);
 	_player.resetStats();
+	dungeon.setCurrentLocation(data[7]);
 
 	return _player;
 }
@@ -49,9 +50,8 @@ std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileNa
 	return fileName;
 }
 
-void SaveSystem::addNewSaveFile(Combatant player, std::string name, std::vector<std::string> files)
+void SaveSystem::addNewSaveFile(Combatant player, std::string name, std::vector<std::string> files, Map _dungeon)
 {
-	/*Take in file and add it to saveFile vector.*/
 	ofstream newFile;
 	name = name + ".txt";	
 	newFile.open(name);
@@ -64,6 +64,7 @@ void SaveSystem::addNewSaveFile(Combatant player, std::string name, std::vector<
 	newFile << player.getDef() << endl;
 	newFile << player.getAmd() << endl;
 	newFile << player.getAud() << endl;
+	newFile << _dungeon.getCurrentLocationIndex();
 	files.push_back(name);
 	newFile.close();
 }

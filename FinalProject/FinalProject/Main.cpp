@@ -76,7 +76,7 @@ void startGame()
 			player.setDef(2);
 			player.setAmd(0);
 			player.setAud(0);
-			saveSystem.addNewSaveFile(player, name, saveFiles);
+			saveSystem.addNewSaveFile(player, name, saveFiles, dungeon);
 			break;
 		}
 			
@@ -86,7 +86,7 @@ void startGame()
 			system("cls");
 			cout << "Enter the name of the player you wish to play as:" << endl << ">>";
 			cin >> name;
-			Player player = saveSystem.retrieveSaveData(name);
+			Player player = saveSystem.retrieveSaveData(name, dungeon);
 			break;
 		}
 			
