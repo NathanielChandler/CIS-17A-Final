@@ -5,11 +5,10 @@
 #include <string>
 #include <fstream>
 
-Player SaveSystem::retrieveSaveData(Player name)
+Player SaveSystem::retrieveSaveData(std::string name)
 {
-	
-	std::string filename = name.getName();
-	filename += ".txt";
+	Player _player();
+	std::string filename = name + ".txt";
 
 	std::ifstream saveFiles;
 	saveFiles.open(filename);
@@ -22,14 +21,10 @@ Player SaveSystem::retrieveSaveData(Player name)
 		{
 			std::getline(saveFiles, l);
 			lines.push_back(l);
-
 		}
 	}
-	
-
 
 	std::vector<int> data;
-
 	for (int i = 1; i < 7; i++)
 	{
 		data.push_back(std::stoi(lines[i]));
@@ -37,16 +32,13 @@ Player SaveSystem::retrieveSaveData(Player name)
 
 	saveFiles.close();
 
-	/*Parsing the lines and storing them into their respective vectors.*/
-	name.setMaxVit(data[0]);
-	name.setMaxStm(data[1]);
-	name.setAtk(data[2]);
-	name.setDef(data[3]);
-	name.setAmd(data[4]);
-	name.setAud(data[5]);
-	name.resetStats();
-
-	
+	_player.setMaxVit(data[0]);
+	_player.setMaxStm(data[1]);
+	_player.setAtk(data[2]);
+	_player.setDef(data[3]);
+	_player.setAmd(data[4]);
+	_player.setAud(data[5]);
+	_player.resetStats();
 
 	return name;
 }
@@ -56,33 +48,21 @@ std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileNa
 	return fileName;
 }
 
-void SaveSystem::addNewSaveFile(Combatant name, std::string filename, std::vector<std::string> files)
+void SaveSystem::addNewSaveFile(Combatant player, std::string name, std::vector<std::string> files)
 {
-	//take in save file name 
-	// add to vector 
-
-	filename = filename + ".txt";
+	/*Take in file and add it to saveFile vector.*/
 	ofstream newFile;
-	newFile.open(filename);
-	newFile << filename << endl;
-	newFile << name.getCurrentVit() << endl;
-	newFile << name.getMaxVit() << endl;
-	newFile << name.getCurrentStm() << endl;
-	newFile << name.getMaxStm() << endl;
-	newFile << name.getAtk() << endl;
-	newFile << name.getDef() << endl;
-	newFile << name.getAmd() << endl;
-	newFile << name.getAud() << endl;
-
-	files.push_back(filename);
+	name = name + ".txt";	
+	newFile.open(name);
+	newFile << name << endl;
+	newFile << player.getCurrentVit() << endl;
+	newFile << player.getMaxVit() << endl;
+	newFile << player.getCurrentStm() << endl;
+	newFile << player.getMaxStm() << endl;
+	newFile << player.getAtk() << endl;
+	newFile << player.getDef() << endl;
+	newFile << player.getAmd() << endl;
+	newFile << player.getAud() << endl;
+	files.push_back(name);
 	newFile.close();
-}
-
-SaveSystem::SaveSystem()
-{
-}
-
-
-SaveSystem::~SaveSystem()
-{
 }
