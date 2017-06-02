@@ -8,7 +8,9 @@
 using namespace std;
 
 void startGame();
-void turn();
+void turn(shared_ptr<Player> player);
+void enemyCombat(shared_ptr<Player> player, shared_ptr<Combatant> enemy);
+void bossCombat(shared_ptr<Player> player, shared_ptr<Boss> boss);
 /*create methods for:
 combat
 room navigation
@@ -23,6 +25,7 @@ vector<string> saveFiles;
 int main()
 {	
 	dungeon.InitMap();
+
 	startGame();
 	
 	/*
@@ -71,6 +74,8 @@ void startGame()
 			player.resetStats();
 			player.setAtk(2);
 			player.setDef(2);
+			player.setAmd(0);
+			player.setAud(0);
 			saveSystem.addNewSaveFile(player, name, saveFiles);
 			break;
 		}
@@ -90,8 +95,29 @@ void startGame()
 	}
 }
 
-void turn()
+void turn(shared_ptr<Player> player)
 {
+	if (dungeon.getCurrentLocation()->getOccupant()->isDead() == false)
+	{
+		if (dungeon.getCurrentLocation()->getOccupant()->getTag() == "enemy")
+		{
+			enemyCombat(player, dungeon.getCurrentLocation()->getOccupant());
+		}
+		else if (dungeon.getCurrentLocation()->getOccupant()->getTag() == "boss")
+		{
+			bossCombat(player, dungeon.getCurrentLocation()->getOccupant());
+		}
+	}
 	//ask to fight
 	//ask to move
+}
+
+void enemyCombat(shared_ptr<Player> player,shared_ptr<Enemy> enemy)
+{
+	auto combat = CombatManager(player, enemy);
+}
+
+void bossCombat(shared_ptr<Player> player, shared_ptr<Boss> boss)
+{
+	auto combat = CombatManager(player, boss);
 }

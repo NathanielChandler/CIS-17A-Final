@@ -28,3 +28,18 @@ void Square::GenerateDescription()
 
 	cout << endl;
 }
+
+void Square::setOccupant(int type)
+{
+	if (level > 0 && level < 5)
+	{
+
+		occupant = std::make_shared<Enemy> (level, type);
+
+	}
+}
+
+void Square::setOccupant(Boss boss)
+{
+	occupant = std::make_shared<Boss> (boss);
+}

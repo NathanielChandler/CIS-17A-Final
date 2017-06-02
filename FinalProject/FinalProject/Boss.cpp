@@ -11,6 +11,7 @@ Boss::Boss(int selection)
 
 	move structure: intro - verse - chorus - verse - chours - intro - chorus
 	*/
+	_tag = "boss";
 	if(selection < 1 || selection > 4) throw domain_error("Invalid int Selection");
 
 	int mod;

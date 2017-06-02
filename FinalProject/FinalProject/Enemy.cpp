@@ -14,6 +14,8 @@ Enemy::Enemy(int lvl, int type)
 		throw domain_error("Invalid int Lvl");
 	}
 
+	_tag = "enemy";
+
 	setMaxVit(10 * lvl);
 	setMaxStm(10 * lvl);
 	resetStats();

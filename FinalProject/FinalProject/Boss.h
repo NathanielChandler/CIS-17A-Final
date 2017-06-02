@@ -1,5 +1,5 @@
 #pragma once
-#include "Enemy.h"
+#include "Combatant.h"
 class Boss : public Combatant
 {
 private:
@@ -9,6 +9,5 @@ public:
 	~Boss();
 
 	string getMoveset() { return _moveset; };
-	string getName() { return _name; };
 };
 

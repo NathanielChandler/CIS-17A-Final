@@ -12,6 +12,5 @@ public:
 	int getMovesetSize() { return _moveset.size(); };
 
 	string getMoveset(int selection);
-	string getName() { return _name; };
 };
 
