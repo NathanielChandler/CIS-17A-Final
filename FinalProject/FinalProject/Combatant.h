@@ -44,7 +44,8 @@ public:
 	int getAmd() { return _amd; };
 	int getAud() { return _aud; };
 	
-	virtual string getMoveset() { return "null"; };
+	virtual string getMoveset(int meh) { return "null"; };
+	virtual int getMovesetSize() { return 1; };
 	bool isDead();
 };
 

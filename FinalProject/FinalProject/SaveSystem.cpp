@@ -32,7 +32,7 @@ Player SaveSystem::retrieveSaveData(std::string name, Map dungeon)
 
 	saveFiles.close();
 
-	_player.isDead = false;
+	//_player.isDead = false;
 	_player.setMaxVit(data[0]);
 	_player.setMaxStm(data[1]);
 	_player.setAtk(data[2]);

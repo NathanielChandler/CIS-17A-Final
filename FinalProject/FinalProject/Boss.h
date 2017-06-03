@@ -8,6 +8,6 @@ public:
 	Boss(int selection);
 	~Boss();
 
-	string getMoveset() { return _moveset; };
+	string getMoveset(int meh) { return _moveset; };
 };
 

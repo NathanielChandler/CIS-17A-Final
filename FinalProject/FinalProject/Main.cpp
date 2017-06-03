@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "CombatManager.h"
 #include "SaveSystem.h"
@@ -99,25 +100,14 @@ void turn(shared_ptr<Player> player)
 {
 	if (dungeon.getCurrentLocation()->getOccupant()->isDead() == false)
 	{
-		if (dungeon.getCurrentLocation()->getOccupant()->getTag() == "enemy")
-		{
 			enemyCombat(player, dungeon.getCurrentLocation()->getOccupant());
-		}
-		else if (dungeon.getCurrentLocation()->getOccupant()->getTag() == "boss")
-		{
-			bossCombat(player, dungeon.getCurrentLocation()->getOccupant());
-		}
+		
 	}
 	//ask to fight
 	//ask to move
 }
 
-void enemyCombat(shared_ptr<Player> player,shared_ptr<Enemy> enemy)
+void enemyCombat(shared_ptr<Player> player,shared_ptr<Combatant> enemy)
 {
 	auto combat = CombatManager(player, enemy);
-}
-
-void bossCombat(shared_ptr<Player> player, shared_ptr<Boss> boss)
-{
-	auto combat = CombatManager(player, boss);
 }
