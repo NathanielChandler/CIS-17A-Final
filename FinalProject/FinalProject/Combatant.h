@@ -17,10 +17,12 @@ private:
 
 protected:
 	string _name;
-
+	string _tag;
 public:
 	Combatant();
 	~Combatant();
+	string getTag() { return _tag; };
+	string getName() { return _name; };
 
 	void resetStats() { _currentVit = _maxVit; _currentStm = _maxStm; };
 
@@ -42,7 +44,8 @@ public:
 	int getAmd() { return _amd; };
 	int getAud() { return _aud; };
 	
-
+	virtual string getMoveset(int meh) { return "null"; };
+	virtual int getMovesetSize() { return 1; };
 	bool isDead();
 };
 
