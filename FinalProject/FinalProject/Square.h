@@ -20,7 +20,7 @@ class Square
 	public:
 		Square() {};
 		~Square() {};
-		void GenerateDescription();
+		std::string GenerateDescription();
 		void setOccupant(int type);
 		void setOccupant(Boss boss);
 		void setLevel(int _level) { level = _level; }

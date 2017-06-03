@@ -10,7 +10,8 @@ using namespace std;
 
 void startGame();
 void turn(shared_ptr<Player> player);
-void enemyCombat(shared_ptr<Player> player, shared_ptr<Combatant> enemy);
+void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy);
+void move();
 /*create methods for:
 combat
 room navigation
@@ -88,10 +89,10 @@ void startGame()
 		cout << "Enter new player name:" << endl << ">> ";
 		cin >> name;
 		shared_ptr<Player> player(new Player(name));
-		player->setMaxVit(10);
-		player->setMaxStm(10);
+		player->setMaxVit(20);
+		player->setMaxStm(20);
 		player->resetStats();
-		player->setAtk(2);
+		player->setAtk(5);
 		player->setDef(2);
 		player->setAmd(0);
 		player->setAud(0);
@@ -107,25 +108,31 @@ void turn(shared_ptr<Player> player)
 	//ask to fight
 	if (dungeon.getCurrentLocation()->getOccupant()->isDead() == false)
 	{
-			enemyCombat(player, dungeon.getCurrentLocation()->getOccupant());
-		
+		combat(player, dungeon.getCurrentLocation()->getOccupant());
 	}
 	//ask to move
 	if (player->isDead() == false)
 	{
-
+		move();
 	}
 }
 
-void enemyCombat(shared_ptr<Player> player,shared_ptr<Combatant> enemy)
+void combat(shared_ptr<Player> player,shared_ptr<Combatant> enemy)
 {
 	char in;
 	auto combat = CombatManager(player, enemy);
-	cout << enemy->getName() << " has appeared!" << endl;
+	system("cls");
+	if (enemy->getTag() == "enemy") cout << "A " << enemy->getName() << " occupies this room" << endl;
+	else 
+	{
+		cout << "________________________________________________________" << endl;
+		cout << "You have enterd the domain of " << enemy->getName() << endl;
+		cout << "########################################################" << endl;
+	}
 	while (player->isDead() == false && enemy->isDead() == false)
 	{
-		cout << enemy->getName() << "\t" << enemy->getCurrentVit() << "/" << enemy->getMaxVit() << endl;
-		cout << "Vitality: " << player->getCurrentVit() << "/" << player->getMaxVit() << endl;
+		cout << "\t"<< enemy->getName() << "\t" << enemy->getCurrentVit() << "/" << enemy->getMaxVit() << "\n" <<  endl;
+		cout << "Vitality: " << player->getCurrentVit() << "/" << player->getMaxVit() << "\t";
 		cout << "Stamina: " << player->getCurrentStm() << "/" << player->getMaxStm() << endl;
 		cout << "Make a move [a = attack, b = guard, c = evade, d = stance, e = strafe]" << endl;
 		cin >> in;
@@ -133,5 +140,44 @@ void enemyCombat(shared_ptr<Player> player,shared_ptr<Combatant> enemy)
 		cout << combat.turn(in) << endl;
 	}
 	if (player->isDead()) cout << player->getName() << " died" << endl;
-	else if(enemy->isDead()) cout << enemy->getName() << " was killed" << endl;
+	else if (enemy->isDead())
+	{
+		system("cls");
+		cout << enemy->getName() << " was killed!" << endl;
+		cout << "You have gained: \n";
+		if (enemy->getAmd() > 0) 
+		{
+			cout << "\t" << enemy->getAmd() << " Animation Dregs\n";
+			player->setAmd(player->getAmd() + enemy->getAmd());
+		}
+		if (enemy->getAud() > 0)
+		{
+			cout << "\t" << enemy->getAud() << " Automation Dregs\n";
+			player->setAud(player->getAud() + enemy->getAud());
+		}
+		player->resetStats();
+		system("pause");
+	}
+}
+
+void move()
+{
+	char in;
+	system("cls");
+	cout << dungeon.getCurrentLocation()->GenerateDescription() << endl;
+	cout << "Where would you like to go?\n\t[ ";
+	if (dungeon.getCurrentLocation()->getNorth()) cout << "N = North ";
+	if (dungeon.getCurrentLocation()->getSouth()) cout << "S = South ";
+	if (dungeon.getCurrentLocation()->getEast()) cout << "E = East ";
+	if (dungeon.getCurrentLocation()->getWest()) cout << "W = West ";
+	cout << " ]\n>>";
+	cin >> in;
+	switch (toupper(in))
+	{
+	case 'N':dungeon.move(NORTH); break;
+	case 'S':dungeon.move(SOUTH); break;
+	case 'E':dungeon.move(EAST); break;
+	case 'W':dungeon.move(WEST); break;
+	default: cout << "That's not an option, you doltz";
+	}
 }
