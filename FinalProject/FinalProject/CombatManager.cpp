@@ -5,7 +5,7 @@
 
 void CombatManager::getEnemyMoveset()
 {
-	if (isBossFight) _enemyMoveset = _boss->getMoveset();
+	if (isBossFight) _enemyMoveset = _enemy->getMoveset(0);
 	else
 	{
 		int size = _enemy->getMovesetSize();
@@ -156,18 +156,10 @@ string CombatManager::ruleBook(shared_ptr<Combatant> attacker, char attack, shar
 	return toReturn;
 }
 
-CombatManager::CombatManager(shared_ptr<Player> player, shared_ptr<Enemy> enemy) : _player(player) , _enemy(enemy)
+CombatManager::CombatManager(shared_ptr<Player> player, shared_ptr<Combatant> enemy) : _player(player) , _enemy(enemy)
 {
-	isBossFight = false;
-	_playerMod = 'z';
-	_enemyMod = 'z';
-	_playerMove = 'z';
-	_enemyMove = 'z';
-}
-
-CombatManager::CombatManager(shared_ptr<Player> player, shared_ptr<Boss> boss) : _player(player), _boss(boss)
-{
-	isBossFight = true;
+	if (_enemy->getTag() == "boss") isBossFight = true;
+	else isBossFight = false;
 	_playerMod = 'z';
 	_enemyMod = 'z';
 	_playerMove = 'z';
@@ -190,30 +182,24 @@ string CombatManager::turn(char c)
 		_playerMove = _playerMod;
 		_playerMod = 'z';
 	}
-	if(isBossFight) toReturn += _player->getName() + ruleBook(_player, _playerMove, _boss, _enemyMove, &_playerMod, &_enemyMod);
-	else toReturn += _player->getName() + ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
+	toReturn += _player->getName() + ruleBook(_player, _playerMove, _enemy, _enemyMove, &_playerMod, &_enemyMod);
 
-	_enemyMove = enemyMoveManager();
-	if (_enemyMod == 'f' && _enemyMove == 'a') _enemyMove = 'f';
-	else if (_enemyMod != 'z' &&_enemyMod != 'f')
+	if (_enemy->isDead() == false)
 	{
-		_enemyMove = _enemyMod;
-		_enemyMod = 'z';
-	}
-
-	if(isBossFight) toReturn += _boss->getName() + ruleBook(_boss, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
-	else toReturn += _enemy->getName() + ruleBook( _enemy, _enemyMove, _player, _playerMove,&_enemyMod ,&_playerMod);
-
-	if (_playerMod == 's' && _player->isDead() == false) 
-	{
-		_playerMove = 's';
-		_playerMod = 'z';
-		toReturn += _player->getName() + " was staggered!\n";
 		_enemyMove = enemyMoveManager();
-		if (isBossFight) toReturn += _boss->getName() + ruleBook(_boss, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
-		else toReturn += _enemy->getName() + ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
+		if (_enemyMod == 'f' && _enemyMove == 'a') _enemyMove = 'f';
+		else if (_enemyMod != 'z' &&_enemyMod != 'f')
+		{
+			_enemyMove = _enemyMod;
+			_enemyMod = 'z';
+		}
 
+		toReturn += _enemy->getName() + ruleBook(_enemy, _enemyMove, _player, _playerMove, &_enemyMod, &_playerMod);
+
+		if (_playerMod == 's' && _player->isDead() == false)
+		{
+			turn('e');
+		}
 	}
-	
 	return toReturn;
 }

@@ -27,6 +27,8 @@ class Map
 	public:
 		Map();
 		~Map();
+		int getCurrentLocationIndex() { return index; }
+		void setCurrentLocation(int i) { currentLocation = &_map[i]; }
 		Square* getCurrentLocation() { return currentLocation; }
 		void InitMap();
 		std::vector<int> Map::ConfigValues(std::string s);

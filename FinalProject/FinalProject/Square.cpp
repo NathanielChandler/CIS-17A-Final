@@ -1,30 +1,47 @@
 #include"Square.h"
 /*This is also bad buuuuut...  ¯\_(*v*)_/¯ */
-#include <iostream>
+//#include <iostream>
+// NEIN! No IOSTREAM!
 using namespace std;
 
-void Square::GenerateDescription()
+string Square::GenerateDescription()
 {
-	cout << endl << "This room has... " << endl;
+	string toReturn;
+	toReturn += "This room has... \n";
 	if (isChasm == true)
 	{
-		cout << "     - an endless chasm" << endl;
+		toReturn += "     - an endless chasm\n";
 	}
 	if (isAltar)
 	{
-		cout << "     - a beautiful altar" << endl;
+		toReturn += "     - a beautiful altar\n";
 	}
 	if (canMoveNorth)
-		cout << "     - a path to the north" << endl;
+		toReturn += "     - a path to the north\n";
 
 	if (canMoveSouth)
-		cout << "     - a path to the south" << endl;
+		toReturn += "     - a path to the south\n";
 
 	if (canMoveWest)
-		cout << "     - a path to the west" << endl;;
+		toReturn += "     - a path to the west\n";
 
 	if (canMoveEast)
-		cout << "     - a path to the east" << endl;
+		toReturn += "     - a path to the east\n";
 
-	cout << endl;
+	return toReturn;
+}
+
+void Square::setOccupant(int type)
+{
+	if (level > 0 && level < 5)
+	{
+
+		occupant = std::make_shared<Enemy> (level, type);
+
+	}
+}
+
+void Square::setOccupant(Boss boss)
+{
+	occupant = std::make_shared<Boss> (boss);
 }
