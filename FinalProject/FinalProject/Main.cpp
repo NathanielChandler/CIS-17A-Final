@@ -212,6 +212,7 @@ void levelUp(shared_ptr<Player> player)
 		if (player->getAud() >= defCost) cout << "\tD = Level up Defense\n";
 		if (player->getAmd() >= vitCost) cout << "\tV = Level up Vitality\n";
 		if (player->getAmd() >= stmCost) cout << "\tS = Level up Stamina\n";
+		cout << "\tR = Return \n";
 		cout << "\n>>";
 		cin >> in;
 		switch (toupper(in))
@@ -222,24 +223,31 @@ void levelUp(shared_ptr<Player> player)
 				player->setAud(player->getAud() - atkCost);
 				player->setAtk(player->getAtk() + 1);
 			}
+			break;
 		case 'D':
-			if (player->getAud() >= atkCost)
+			if (player->getAud() >= defCost)
 			{
-				player->setAud(player->getAud() - atkCost);
-				player->setAtk(player->getAtk() + 1);
+				player->setAud(player->getAud() - defCost);
+				player->setDef(player->getDef() + 1);
 			}
+			break;
 		case 'V':
-			if (player->getAud() >= atkCost)
+			if (player->getAmd() >= vitCost)
 			{
-				player->setAud(player->getAud() - atkCost);
-				player->setAtk(player->getAtk() + 1);
+				player->setAmd(player->getAmd() - vitCost);
+				player->setMaxVit(player->getMaxVit() + 1);
 			}
+			break;
 		case 'S':
-			if (player->getAud() >= atkCost)
+			if (player->getAmd() >= stmCost)
 			{
-				player->setAud(player->getAud() - atkCost);
-				player->setAtk(player->getAtk() + 1);
+				player->setAmd(player->getAmd() - stmCost);
+				player->setMaxStm(player->getMaxStm() + 1);
 			}
+			break;
+		case 'R':
+			done = true;
+			break;
 		}
 	}
 }
