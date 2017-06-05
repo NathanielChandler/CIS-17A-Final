@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <Windows.h>
 #include "CombatManager.h"
 #include "SaveSystem.h"
 #include "Player.h"
@@ -13,6 +14,7 @@ void turn(shared_ptr<Player> player);
 void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy);
 void move(shared_ptr<Player> player);
 void levelUp(shared_ptr<Player> player);
+
 /*create methods for:
 combat
 room navigation
@@ -48,6 +50,7 @@ void startGame()
 		<< "<C> : Continue" << endl
 		<< "<Q> : Quit" << endl
 		<< ">> ";
+	
 	cin >> choice;
 
 	shared_ptr<Player> player(new Player("default"));
@@ -70,7 +73,8 @@ void startGame()
 			player->setAud(0);
 			player->setMapPosition(dungeon.getCurrentLocationIndex());
 			saveSystem.addNewSaveFile(player, name, saveFiles, dungeon.getCurrentLocationIndex());
-			
+			cout << "You wake up in a dark dungeon. You wield a small sword, and only have leather armor. In front of you there is a door, and you proceed to walk through." << endl;
+			system("pause");
 			break;
 		}
 			
@@ -81,6 +85,12 @@ void startGame()
 			cout << "Enter the name of the player you wish to play as:" << endl << ">>";
 			cin >> name;
 			auto lines = saveSystem.retrieveSaveData(name);
+			if (lines.size() != 0)
+			{
+				
+				throw domain_error("Error retrieving save stats.");
+
+			}
 			player->setName(lines[0]);
 			player->setMaxVit(stoi(lines[1]));
 			player->setMaxStm(stoi(lines[2]));
@@ -91,6 +101,7 @@ void startGame()
 			player->setAud(stoi(lines[6]));
 			player->setMapPosition(stoi(lines[7]));
 			dungeon.setCurrentLocation(stoi(lines[7]));
+			
 			break;
 		}
 			
@@ -133,44 +144,59 @@ void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy)
 	char in;
 	auto combat = CombatManager(player, enemy);
 	system("cls");
-	
-	if (enemy->getTag() == "enemy") cout << "A " << enemy->getName() << " occupies this room" << endl;
-	else
-	{
-		cout << "________________________________________________________" << endl;
-		cout << "You have entered the domain of " << enemy->getName() << endl;
-		cout << "########################################################" << endl;
-	}
-	
-	while (player->isDead() == false && enemy->isDead() == false)
-	{
-		cout << "\t" << enemy->getName() << "\t" << enemy->getCurrentVit() << "/" << enemy->getMaxVit() << "\n" << endl;
-		cout << "Vitality: " << player->getCurrentVit() << "/" << player->getMaxVit() << "\t";
-		cout << "Stamina: " << player->getCurrentStm() << "/" << player->getMaxStm() << endl;
-		cout << "Make a move [a = attack, b = guard, c = evade, d = stance, e = strafe]" << endl;
-		cin >> in;
-		system("cls");
-		cout << combat.turn(in) << endl;
-	}
-	if (player->isDead()) system("cls"); 
-	else if (enemy->isDead())
-	{
-		system("cls");
-		cout << enemy->getName() << " was killed!" << endl;
-		cout << "You have gained: \n";
-		if (enemy->getAmd() > 0)
-		{
-			cout << "\t" << enemy->getAmd() << " Animation Dregs\n";
-			player->setAmd(player->getAmd() + enemy->getAmd());
+	try {
+
+		if (enemy->isDead() == true)
+		{ //checks to see if enemy is dead before entering the room. 
+			throw 0;
 		}
-		if (enemy->getAud() > 0)
-		{
-			cout << "\t" << enemy->getAud() << " Automation Dregs\n";
-			player->setAud(player->getAud() + enemy->getAud());
-		}
-		player->resetStats();
-		system("pause");
 	}
+	catch (...)
+	{
+
+		cout << "The enemy was so afraid that it decided to kill itself. A braver enemy has taken its place.";
+		enemy->isDead() == false;
+
+	}
+	
+		if (enemy->getTag() == "enemy") cout << "A " << enemy->getName() << " occupies this room" << endl;
+		else
+		{
+			cout << "________________________________________________________" << endl;
+			cout << "You have entered the domain of " << enemy->getName() << endl;
+			cout << "########################################################" << endl;
+		}
+
+		while (player->isDead() == false && enemy->isDead() == false)
+		{
+			cout << "\t" << enemy->getName() << "\t" << enemy->getCurrentVit() << "/" << enemy->getMaxVit() << "\n" << endl;
+			cout << "Vitality: " << player->getCurrentVit() << "/" << player->getMaxVit() << "\t";
+			cout << "Stamina: " << player->getCurrentStm() << "/" << player->getMaxStm() << endl;
+			cout << "Make a move [a = attack, b = guard, c = evade, d = stance, e = strafe]" << endl;
+			cin >> in;
+			system("cls");
+			cout << combat.turn(in) << endl;
+		}
+		if (player->isDead()) system("cls");
+		else if (enemy->isDead())
+		{
+			system("cls");
+			cout << enemy->getName() << " was killed!" << endl;
+			cout << "You have gained: \n";
+			if (enemy->getAmd() > 0)
+			{
+				cout << "\t" << enemy->getAmd() << " Animation Dregs\n";
+				player->setAmd(player->getAmd() + enemy->getAmd());
+			}
+			if (enemy->getAud() > 0)
+			{
+				cout << "\t" << enemy->getAud() << " Automation Dregs\n";
+				player->setAud(player->getAud() + enemy->getAud());
+			}
+			player->resetStats();
+			system("pause");
+		}
+	
 }
 
 void move(shared_ptr<Player> player)
@@ -265,4 +291,5 @@ void levelUp(shared_ptr<Player> player)
 			break;
 		}
 	}
+	
 }
