@@ -188,6 +188,7 @@ void move(shared_ptr<Player> player)
 void levelUp(shared_ptr<Player> player)
 {
 	//ressurect enemies(Not Bosses)
+	dungeon.resetRooms();
 	bool done = false;
 	while (!done)
 	{
