@@ -5,7 +5,7 @@
 #include "SaveSystem.h" 
 #include "Combatant.h"
 
-Player SaveSystem::retrieveSaveData(std::string name, Map dungeon)
+Player SaveSystem::retrieveSaveData(std::string name)
 {
 	Player _player(name);
 	std::string filename = name + ".txt";
@@ -40,7 +40,7 @@ Player SaveSystem::retrieveSaveData(std::string name, Map dungeon)
 	_player.setAmd(data[4]);
 	_player.setAud(data[5]);
 	_player.resetStats();
-	dungeon.setCurrentLocation(data[7]);
+	_player.setMapPosition(data[7]);
 
 	return _player;
 }
@@ -50,8 +50,9 @@ std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileNa
 	return fileName;
 }
 
-void SaveSystem::addNewSaveFile(Combatant player, std::string name, std::vector<std::string> files, Map _dungeon)
+void SaveSystem::addNewSaveFile(Player player, std::string name, std::vector<std::string> files, int mapIndex)
 {
+	Map dungeon;
 	ofstream newFile;
 	name = name + ".txt";	
 	newFile.open(name);
@@ -64,7 +65,8 @@ void SaveSystem::addNewSaveFile(Combatant player, std::string name, std::vector<
 	newFile << player.getDef() << endl;
 	newFile << player.getAmd() << endl;
 	newFile << player.getAud() << endl;
-	newFile << _dungeon.getCurrentLocationIndex();
+	dungeon.setCurrentLocation(mapIndex);
+	newFile << dungeon.getCurrentLocationIndex();
 	files.push_back(name);
 	newFile.close();
 }

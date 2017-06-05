@@ -38,16 +38,17 @@ int main()
 
 void startGame()
 {
+	
 	cout << "\t--------------------\n" << "\t|   Rest in Heap   |\n" << "\t--------------------\n"
 		<< "By Nate,     Xavier,   and   Deven" << endl << endl;
 
 	char choice;
 	cout << "<N> : New Game" << endl
-	//	<< "<C> : Continue" << endl
+		<< "<C> : Continue" << endl
 		<< "<Q> : Quit" << endl
 		<< ">> ";
 	cin >> choice;
-	/*
+	
 	switch (toupper(choice))
 	{
 		case 'N':
@@ -64,25 +65,28 @@ void startGame()
 			player.setDef(2);
 			player.setAmd(0);
 			player.setAud(0);
-			//saveSystem.addNewSaveFile(player, name, saveFiles, dungeon);
+			player.setMapPosition(dungeon.getCurrentLocationIndex());
+			saveSystem.addNewSaveFile(player, name, saveFiles, dungeon.getCurrentLocationIndex());
+			
 			break;
 		}
 			
 		case 'C':
 		{
+			dungeon.getCurrentLocation();
 			string name;
 			system("cls");
 			cout << "Enter the name of the player you wish to play as:" << endl << ">>";
 			cin >> name;
-			Player player = saveSystem.retrieveSaveData(name, dungeon);
+			Player player = saveSystem.retrieveSaveData(name);
 			break;
 		}
 			
 		case 'Q':
 			break;
 	}
-	*/
-	if (choice == 'N')
+	
+	if (toupper(choice) == 'N')
 	{
 		system("cls");
 		string name;

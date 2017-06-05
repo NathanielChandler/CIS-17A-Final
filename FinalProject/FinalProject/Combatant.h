@@ -13,6 +13,7 @@ private:
 	int _def;
 	int _amd; // animation dregs, the currency to lvl up vit and stamina
 	int _aud; // automation dregs, the currency to lvl up attack and defense
+	int _mapIndex;
 	bool _isDead;
 
 protected:
@@ -34,6 +35,7 @@ public:
 	void setDef(int def) { _def = def; };
 	void setAmd(int amd) { _amd = amd; };
 	void setAud(int aud) { _aud = aud; };
+	void setMapPosition(int mapIndex) { _mapIndex = mapIndex; };
 
 	int getCurrentVit() { return _currentVit; };
 	int getMaxVit() { return _maxVit; };
@@ -43,6 +45,7 @@ public:
 	int getDef() { return _def; };
 	int getAmd() { return _amd; };
 	int getAud() { return _aud; };
+	int getMapPosition() { return _mapIndex; }; 
 	
 	virtual string getMoveset(int meh) { return "null"; };
 	virtual int getMovesetSize() { return 1; };
