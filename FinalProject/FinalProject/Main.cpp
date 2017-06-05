@@ -104,12 +104,18 @@ void startGame()
 		{
 			turn(player);
 		}
+		cout << "\n\n\t___\n \t  YOU DIED \n\t__";
 	}
 }
 
 
 void turn(shared_ptr<Player> player)
 {
+	if (dungeon.getCurrentLocation()->getNorth() == false && dungeon.getCurrentLocation()->getSouth() == false && dungeon.getCurrentLocation()->getEast() == false && dungeon.getCurrentLocation()->getWest() == false)
+	{
+		cout << "You fell down a chasm.";
+		player->setCurrentVit(0);
+	}
 	//ask to fight
 	if (dungeon.getCurrentLocation()->getOccupant() != nullptr && dungeon.getCurrentLocation()->getOccupant()->isDead() == false)
 	{
@@ -127,13 +133,15 @@ void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy)
 	char in;
 	auto combat = CombatManager(player, enemy);
 	system("cls");
+	
 	if (enemy->getTag() == "enemy") cout << "A " << enemy->getName() << " occupies this room" << endl;
 	else
 	{
 		cout << "________________________________________________________" << endl;
-		cout << "You have enterd the domain of " << enemy->getName() << endl;
+		cout << "You have entered the domain of " << enemy->getName() << endl;
 		cout << "########################################################" << endl;
 	}
+	
 	while (player->isDead() == false && enemy->isDead() == false)
 	{
 		cout << "\t" << enemy->getName() << "\t" << enemy->getCurrentVit() << "/" << enemy->getMaxVit() << "\n" << endl;
@@ -144,7 +152,7 @@ void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy)
 		system("cls");
 		cout << combat.turn(in) << endl;
 	}
-	if (player->isDead()) cout << player->getName() << " died" << endl;
+	if (player->isDead()) system("cls"); 
 	else if (enemy->isDead())
 	{
 		system("cls");
