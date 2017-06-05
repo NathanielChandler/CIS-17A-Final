@@ -76,7 +76,6 @@ void startGame()
 			
 		case 'C':
 		{
-			dungeon.getCurrentLocation();
 			string name;
 			system("cls");
 			cout << "Enter the name of the player you wish to play as:" << endl << ">>";
@@ -91,6 +90,7 @@ void startGame()
 			player->setAmd(stoi(lines[5]));
 			player->setAud(stoi(lines[6]));
 			player->setMapPosition(stoi(lines[7]));
+			dungeon.setCurrentLocation(stoi(lines[7]));
 			break;
 		}
 			
