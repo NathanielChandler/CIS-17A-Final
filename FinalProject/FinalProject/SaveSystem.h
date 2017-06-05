@@ -12,7 +12,7 @@ class SaveSystem
 	
 	public:
 		std::ifstream saveFiles;
-		Player retrieveSaveData(std::string name);
+		std::vector<std::string> retrieveSaveData(std::string name);
 		std::vector<std::string> getfilenames(std::vector<std::string> fileName); //to retrieve save file vector 
 		void addNewSaveFile(shared_ptr<Player> player, std::string filename, std::vector<std::string> files, int mapIndex);
 		SaveSystem() {};

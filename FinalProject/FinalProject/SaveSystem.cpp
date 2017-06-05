@@ -5,9 +5,9 @@
 #include "SaveSystem.h" 
 #include "Combatant.h"
 
-Player SaveSystem::retrieveSaveData(std::string name)
+std::vector<std::string> SaveSystem::retrieveSaveData(std::string name)
 {
-	Player _player(name);
+	//std::vector<std::string> _player;
 	std::string filename = name + ".txt";
 
 	std::ifstream saveFiles;
@@ -32,17 +32,7 @@ Player SaveSystem::retrieveSaveData(std::string name)
 
 	saveFiles.close();
 
-	//_player.isDead = false;
-	_player.setMaxVit(data[0]);
-	_player.setMaxStm(data[1]);
-	_player.setAtk(data[2]);
-	_player.setDef(data[3]);
-	_player.setAmd(data[4]);
-	_player.setAud(data[5]);
-	_player.resetStats();
-	_player.setMapPosition(data[7]);
-
-	return _player;
+	return lines;
 }
 
 std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileName)
@@ -50,23 +40,22 @@ std::vector<std::string> SaveSystem::getfilenames(std::vector<std::string>fileNa
 	return fileName;
 }
 
-void SaveSystem::addNewSaveFile(Player player, std::string name, std::vector<std::string> files, int mapIndex)
+void SaveSystem::addNewSaveFile(shared_ptr<Player> player, std::string name, std::vector<std::string> files, int mapIndex)
 {
 	Map dungeon;
 	ofstream newFile;
-	name = name + ".txt";	
-	newFile.open(name);
+	std::string  saveName= name + ".txt";	
+	newFile.open(saveName);
 	newFile << name << endl;
-	newFile << player.getCurrentVit() << endl;
-	newFile << player.getMaxVit() << endl;
-	newFile << player.getCurrentStm() << endl;
-	newFile << player.getMaxStm() << endl;
-	newFile << player.getAtk() << endl;
-	newFile << player.getDef() << endl;
-	newFile << player.getAmd() << endl;
-	newFile << player.getAud() << endl;
-	dungeon.setCurrentLocation(mapIndex);
-	newFile << dungeon.getCurrentLocationIndex();
-	files.push_back(name);
+	//newFile << player->getCurrentVit() << endl;
+	newFile << player->getMaxVit() << endl;
+	//newFile << player->getCurrentStm() << endl;
+	newFile << player->getMaxStm() << endl;
+	newFile << player->getAtk() << endl;
+	newFile << player->getDef() << endl;
+	newFile << player->getAmd() << endl;
+	newFile << player->getAud() << endl;
+	newFile << mapIndex;
+	files.push_back(saveName);
 	newFile.close();
 }

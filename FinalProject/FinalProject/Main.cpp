@@ -48,7 +48,9 @@ void startGame()
 		<< "<Q> : Quit" << endl
 		<< ">> ";
 	cin >> choice;
-	
+
+	shared_ptr<Player> player(new Player("default"));
+	bool done = false;
 	switch (toupper(choice))
 	{
 		case 'N':
@@ -57,15 +59,15 @@ void startGame()
 			string name;
 			cout << "Enter new player name:" << endl << ">> ";
 			cin >> name;
-			auto player = Player(name);
-			player.setMaxVit(10);
-			player.setMaxStm(10);
-			player.resetStats();
-			player.setAtk(2);
-			player.setDef(2);
-			player.setAmd(0);
-			player.setAud(0);
-			player.setMapPosition(dungeon.getCurrentLocationIndex());
+			player->setName(name);
+			player->setMaxVit(10);
+			player->setMaxStm(10);
+			player->resetStats();
+			player->setAtk(2);
+			player->setDef(2);
+			player->setAmd(0);
+			player->setAud(0);
+			player->setMapPosition(dungeon.getCurrentLocationIndex());
 			saveSystem.addNewSaveFile(player, name, saveFiles, dungeon.getCurrentLocationIndex());
 			
 			break;
@@ -78,28 +80,25 @@ void startGame()
 			system("cls");
 			cout << "Enter the name of the player you wish to play as:" << endl << ">>";
 			cin >> name;
-			Player player = saveSystem.retrieveSaveData(name);
+			auto lines = saveSystem.retrieveSaveData(name);
+			player->setName(lines[0]);
+			player->setMaxVit(stoi(lines[1]));
+			player->setMaxStm(stoi(lines[2]));
+			player->resetStats();
+			player->setAtk(stoi(lines[3]));
+			player->setDef(stoi(lines[4]));
+			player->setAmd(stoi(lines[5]));
+			player->setAud(stoi(lines[6]));
+			player->setMapPosition(stoi(lines[7]));
 			break;
 		}
 			
 		case 'Q':
+			done = true;
 			break;
 	}
-	
-	if (toupper(choice) == 'N')
+	if (!done)
 	{
-		system("cls");
-		string name;
-		cout << "Enter new player name:" << endl << ">> ";
-		cin >> name;
-		shared_ptr<Player> player(new Player(name));
-		player->setMaxVit(20);
-		player->setMaxStm(20);
-		player->resetStats();
-		player->setAtk(5);
-		player->setDef(2);
-		player->setAmd(0);
-		player->setAud(0);
 		while (player->isDead() == false)
 		{
 			turn(player);
