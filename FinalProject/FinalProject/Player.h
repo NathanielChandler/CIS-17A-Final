@@ -8,5 +8,6 @@ public:
 	Player(string name) { _name = name; };
 	~Player();
 	string getName() { return _name; };
+	void setName(string name) { _name = name; };
 };
 
