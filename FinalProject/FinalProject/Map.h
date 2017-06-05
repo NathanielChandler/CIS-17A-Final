@@ -33,4 +33,5 @@ class Map
 		void InitMap();
 		std::vector<int> Map::ConfigValues(std::string s);
 		void move(Directions dir);
+		void resetRooms();
 };

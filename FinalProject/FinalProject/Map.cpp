@@ -146,3 +146,15 @@ void Map::move(Directions dir)
 			break;
 	}
 }
+
+void Map::resetRooms()
+{
+	for (auto room : _map)
+	{
+		if (room.getOccupant() != nullptr)
+		{
+			if (room.getOccupant()->isDead() && room.getOccupant()->getTag() == "enemy")
+				room.getOccupant()->resetStats();
+		}
+	}
+}
