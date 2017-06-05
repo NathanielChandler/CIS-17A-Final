@@ -73,7 +73,7 @@ void startGame()
 			player->setAud(0);
 			player->setMapPosition(dungeon.getCurrentLocationIndex());
 			saveSystem.addNewSaveFile(player, name, saveFiles, dungeon.getCurrentLocationIndex());
-			cout << "You wake up in a dark dungeon. You wield a small sword, and only have leather armor. In front of you there is a door, and you proceed to walk through." << endl;
+			cout << "You wake up in a dark dungeon. You wield a small sword, and only have leather \narmor. In front of you there is a door, and you proceed to walk through." << endl;
 			system("pause");
 			break;
 		}
@@ -108,6 +108,7 @@ void startGame()
 		case 'Q':
 			done = true;
 			break;
+	
 	}
 	if (!done)
 	{
@@ -115,7 +116,12 @@ void startGame()
 		{
 			turn(player);
 		}
-		cout << "\n\n\t___\n \t  YOU DIED \n\t__";
+		if (player->isDead() == true)
+		{
+
+			cout << "\n\n\t___\n \t  YOU DIED \n\t___" << endl;
+		}
+		
 	}
 }
 
