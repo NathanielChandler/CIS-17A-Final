@@ -29,6 +29,7 @@ vector<string> saveFiles;
 int main()
 {	
 	dungeon.InitMap();
+	dungeon.setCurrentLocation(16);
 
 	startGame();
 	
@@ -41,22 +42,25 @@ int main()
 
 void startGame()
 {
-	
-	cout << "\t--------------------\n" << "\t|   Rest in Heap   |\n" << "\t--------------------\n"
-		<< "By Nate,     Xavier,   and   Deven" << endl << endl;
-
-	char choice;
-	cout << "<N> : New Game" << endl
-		<< "<C> : Continue" << endl
-		<< "<Q> : Quit" << endl
-		<< ">> ";
-	
-	cin >> choice;
-
-	shared_ptr<Player> player(new Player("default"));
 	bool done = false;
-	switch (toupper(choice))
+	while (!done)
 	{
+		system("cls");
+		cout << "\t--------------------\n" << "\t|   Rest in Heap   |\n" << "\t--------------------\n"
+			<< "By Nate,     Xavier,   and   Deven" << endl << endl;
+
+		char choice;
+		cout << "<N> : New Game" << endl
+			<< "<C> : Continue" << endl
+			<< "<Q> : Quit" << endl
+			<< ">> ";
+
+		cin >> choice;
+
+		shared_ptr<Player> player(new Player("default"));
+
+		switch (toupper(choice))
+		{
 		case 'N':
 		{
 			system("cls");
@@ -67,17 +71,25 @@ void startGame()
 			player->setMaxVit(10);
 			player->setMaxStm(10);
 			player->resetStats();
-			player->setAtk(2);
-			player->setDef(2);
+			player->setAtk(3);
+			player->setDef(3);
 			player->setAmd(0);
 			player->setAud(0);
 			player->setMapPosition(dungeon.getCurrentLocationIndex());
-			saveSystem.addNewSaveFile(player, name, saveFiles, dungeon.getCurrentLocationIndex());
+			system("cls");
+			try
+			{
+				saveSystem.addNewSaveFile(player, name, saveFiles, dungeon.getCurrentLocationIndex());
+			}
+			catch (...)
+			{
+				cout << "Failed to save\n" << endl;
+			}
 			cout << "You wake up in a dark dungeon. You wield a small sword, and only have leather \narmor. In front of you there is a door, and you proceed to walk through." << endl;
 			system("pause");
 			break;
 		}
-			
+
 		case 'C':
 		{
 			string name;
@@ -85,12 +97,6 @@ void startGame()
 			cout << "Enter the name of the player you wish to play as:" << endl << ">>";
 			cin >> name;
 			auto lines = saveSystem.retrieveSaveData(name);
-			if (lines.size() != 0)
-			{
-				
-				throw domain_error("Error retrieving save stats.");
-
-			}
 			player->setName(lines[0]);
 			player->setMaxVit(stoi(lines[1]));
 			player->setMaxStm(stoi(lines[2]));
@@ -101,27 +107,29 @@ void startGame()
 			player->setAud(stoi(lines[6]));
 			player->setMapPosition(stoi(lines[7]));
 			dungeon.setCurrentLocation(stoi(lines[7]));
-			
+
 			break;
 		}
-			
+
 		case 'Q':
 			done = true;
 			break;
-	
-	}
-	if (!done)
-	{
-		while (player->isDead() == false)
-		{
-			turn(player);
-		}
-		if (player->isDead() == true)
-		{
 
-			cout << "\n\n\t___\n \t  YOU DIED \n\t___" << endl;
 		}
-		
+		if (!done)
+		{
+			while (player->isDead() == false)
+			{
+				turn(player);
+			}
+			if (player->isDead() == true)
+			{
+
+				cout << "\n\n\t------------\n \t| YOU DIED |\n\t------------\n\n" << endl;
+				system("pause");
+			}
+
+		}
 	}
 }
 
@@ -147,23 +155,10 @@ void turn(shared_ptr<Player> player)
 
 void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy)
 {
-	char in;
-	auto combat = CombatManager(player, enemy);
-	system("cls");
 	try {
-
-		if (enemy->isDead() == true)
-		{ //checks to see if enemy is dead before entering the room. 
-			throw 0;
-		}
-	}
-	catch (...)
-	{
-
-		cout << "The enemy was so afraid that it decided to kill itself. A braver enemy has taken its place.";
-		enemy->isDead() == false;
-
-	}
+		char in;
+		auto combat = CombatManager(player, enemy);
+		system("cls");
 	
 		if (enemy->getTag() == "enemy") cout << "A " << enemy->getName() << " occupies this room" << endl;
 		else
@@ -202,6 +197,13 @@ void combat(shared_ptr<Player> player, shared_ptr<Combatant> enemy)
 			player->resetStats();
 			system("pause");
 		}
+
+	}
+	catch (...)
+	{
+		cout << "Hmm, that's odd. The enemy did not engage in combat\nIf this continues to occur, contact our staff\n\tError code: Wombat" << endl;
+		system("pause");
+	}
 	
 }
 
@@ -238,8 +240,15 @@ void levelUp(shared_ptr<Player> player)
 	bool done = false;
 	while (!done)
 	{
-		saveSystem.addNewSaveFile(player, player->getName(), saveFiles, dungeon.getCurrentLocationIndex());
 		system("cls");
+		try 
+		{
+			saveSystem.addNewSaveFile(player, player->getName(), saveFiles, dungeon.getCurrentLocationIndex());
+		}
+		catch (...)
+		{
+			cout << "Failed to save\n" << endl;
+		}
 		int atkCost = player->getAtk() * 5;
 		int defCost = player->getDef() * 5;
 		int vitCost = player->getMaxVit() * 5;
